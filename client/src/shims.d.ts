@@ -3,3 +3,8 @@ declare module '*.vue' {
   const component: DefineComponent<{}, {}, any>
   export default component
 }
+
+/**
+ * This macro represents the current line in the file.
+ */
+declare const $line: string
