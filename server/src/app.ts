@@ -40,8 +40,8 @@ const PORT = parseInt(process.env.SOVOK_SERVER_PORT || '3000', 10)
       typeof address === 'string' ? address : `http://localhost:${PORT}`
 
     console.log(`
-        🚀 Server ready at:    ${stringAddress}
-           TRPC playground:    ${stringAddress}${TRPC_PLAYGROUND_ENDPOINT}
+🚀 Server ready at:    ${stringAddress}
+   TRPC playground:    ${stringAddress}${TRPC_PLAYGROUND_ENDPOINT}
     `)
   })
 })()
