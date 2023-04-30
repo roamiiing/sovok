@@ -1,3 +1,3 @@
-import { hello } from '@sovok/shared'
+import { mainRouter } from './main-router'
 
-console.log('Hello', hello)
+export type MainRouter = typeof mainRouter
