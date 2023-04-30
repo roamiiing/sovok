@@ -1,0 +1,13 @@
+{
+  "name": "@sovok/server",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "nodemon",
+    "dev:nowatch": "node -r jiti/register -r tsconfig-paths/register src/index.ts"
+  },
+  "devDependencies": {
+    "jiti": "^1.18.2",
+    "nodemon": "^2.0.22"
+  }
+}
