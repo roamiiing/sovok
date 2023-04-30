@@ -1,7 +1,7 @@
 <script setup lang="ts">
-  import { useUser } from '@sovok/client/composables/user'
+  import { useMe } from '@sovok/client/composables/user'
 
-  const { user, userError } = useUser()
+  const { user, userError } = useMe()
 </script>
 
 <template>

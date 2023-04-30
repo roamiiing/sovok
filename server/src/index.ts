@@ -1,3 +1,3 @@
-import { mainRouter } from './main-router'
+import { mainRouter } from './routes'
 
 export type MainRouter = typeof mainRouter

@@ -1,9 +1,11 @@
+import { resolve } from 'path'
 import express from 'express'
 import cors from 'cors'
 import { createExpressMiddleware as createTRPCMiddleware } from '@trpc/server/adapters/express'
 import { expressHandler as trpcPlayground } from 'trpc-playground/handlers/express'
-import { mainRouter } from './main-router'
-import { resolve } from 'path'
+import { mainRouter } from './routes'
+import { prisma } from './prisma'
+import { authenticationMiddleware } from './middlewares'
 
 const IS_DEV = process.env.NODE_ENV === 'development'
 
@@ -19,6 +21,8 @@ const PORT = parseInt(process.env.SOVOK_SERVER_PORT || '3000', 10)
 
   app.use(cors())
 
+  app.use(authenticationMiddleware({ prisma }))
+
   if (!IS_DEV) app.use(express.static(STATIC_PATH))
 
   const playgroundMiddleware = await trpcPlayground({
@@ -29,6 +33,10 @@ const PORT = parseInt(process.env.SOVOK_SERVER_PORT || '3000', 10)
 
   const trpcMiddleware = createTRPCMiddleware({
     router: mainRouter,
+    createContext: ctx => ({
+      prisma,
+      user: ctx.res.locals.user,
+    }),
   })
 
   app.use(TRPC_ENDPOINT, trpcMiddleware)

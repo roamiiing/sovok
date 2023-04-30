@@ -1,8 +1,10 @@
 import { trpc } from '@sovok/client/trpc'
 import useSWRV from 'swrv'
 
-export const useUser = () => {
-  const { data: user, error: userError } = useSWRV($line, () => trpc.me.query())
+export const useMe = () => {
+  const { data: user, error: userError } = useSWRV($line, () =>
+    trpc.auth.me.query(),
+  )
 
   return {
     user,
