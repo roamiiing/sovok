@@ -1,19 +1,35 @@
 <script setup lang="ts">
-  import { useMe } from '@sovok/client/composables/user'
+  import { computed } from 'vue'
+  import { useRoute } from 'vue-router'
+  import { NConfigProvider, NNotificationProvider } from 'naive-ui'
 
-  const { user, userError } = useMe()
+  import { useThemeStore } from '@sovok/client/composables/ui'
+  import BaseLayout from '@sovok/client/layouts/BaseLayout.vue'
+
+  const route = useRoute()
+
+  const layout = computed(() => route.meta.layout ?? BaseLayout)
+
+  const { currentThemeOverrides, currentTheme } = useThemeStore()
 </script>
 
 <template>
-  <div class="flex flex-col items-center justify-center min-h-screen py-2">
-    <p v-if="userError">{{ userError.message }}</p>
-    <p v-else-if="!user">Loading...</p>
-    <p v-else>{{ user.name }}</p>
-  </div>
+  <NConfigProvider
+    class="w-full h-full"
+    :theme="currentTheme"
+    :theme-overrides="currentThemeOverrides"
+  >
+    <NNotificationProvider>
+      <component :is="layout">
+        <RouterView />
+      </component>
+    </NNotificationProvider>
+  </NConfigProvider>
 </template>
 
 <style>
-  @tailwind base;
+  @import './styles/preflight.css';
+  /* @tailwind base; */
   @tailwind components;
   @tailwind utilities;
 </style>

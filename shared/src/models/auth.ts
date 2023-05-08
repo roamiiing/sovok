@@ -37,8 +37,8 @@ export const SignUpOutput = z.discriminatedUnion('type', [
 export type SignUpOutput = z.infer<typeof SignUpOutput>
 
 export const SignInInput = z.object({
-  email: User.shape.email,
-  password: Password,
+  email: z.string(),
+  password: z.string(),
 })
 
 export type SignInInput = z.infer<typeof SignInInput>

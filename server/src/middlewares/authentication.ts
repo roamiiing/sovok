@@ -13,7 +13,9 @@ const verifyToken = (token: string) => {
     ) {
       return verified as { userId: string }
     }
-  } finally {
+
+    return null
+  } catch {
     return null
   }
 }
@@ -31,20 +33,14 @@ export const authenticationMiddleware =
 
     const verified = verifyToken(jwtToken)
 
-    if (!verified) {
-      res.setHeader('Authorization', '')
-      return next()
-    }
+    if (!verified) return next()
 
     const user = await prisma.user.findUnique({
       select: { id: true, name: true, email: true },
       where: { id: verified.userId },
     })
 
-    if (!user) {
-      res.setHeader('Authorization', '')
-      return next()
-    }
+    if (!user) return next()
 
     res.locals.user = user
 
