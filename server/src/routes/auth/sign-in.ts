@@ -1,14 +1,10 @@
 import { publicProcedure } from '@sovok/server/trpc'
+import { signToken } from '@sovok/server/utils/jwt'
 import { SignInInput, SignInOutput, SignInOutputType } from '@sovok/shared'
 import { verify } from 'argon2'
-import { sign } from 'jsonwebtoken'
 
 const verifyPassword = async (hash: string, password: string) => {
   return verify(hash, password)
-}
-
-const signToken = (userId: string) => {
-  return sign({ userId }, process.env.SOVOK_SERVER_JWT_SECRET!)
 }
 
 export const signIn = publicProcedure

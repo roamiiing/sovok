@@ -1,0 +1,1 @@
+<template>ето дашборд</template>

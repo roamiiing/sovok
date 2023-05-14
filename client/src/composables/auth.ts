@@ -1,8 +1,16 @@
 import { defineStore } from 'pinia'
 import { useLocalStorage } from '@vueuse/core'
 import useSWRV from 'swrv'
-import { SignInInput, SignInOutputType, SignUpInput } from '@sovok/shared'
+import {
+  SignInInput,
+  SignInOutputType,
+  SignUpInput,
+  SignUpOutputType,
+} from '@sovok/shared'
 import { trpc } from '@sovok/client/trpc'
+import { useNotification } from 'naive-ui'
+import { useRouter } from 'vue-router'
+import { Page } from '../domain/page'
 
 export const useAuthStore = defineStore($line, () => {
   const token = useLocalStorage<string | null>('sovok-auth-token', () => null)
@@ -11,14 +19,29 @@ export const useAuthStore = defineStore($line, () => {
     data: user,
     error: userError,
     mutate: refetchUser,
-  } = useSWRV($line, () => trpc.auth.me.query())
+  } = useSWRV($line, () => trpc.auth.me.query(), {
+    shouldRetryOnError: false,
+  })
+
+  const notification = useNotification()
+  const router = useRouter()
 
   const signIn = async (input: SignInInput) => {
     const res = await trpc.auth.signIn.mutate(input)
 
     if (res.type === SignInOutputType.Success) {
       token.value = res.credentials.jwt
-      refetchUser()
+      refetchUser(() => res.credentials.user)
+      router.replace({
+        name: Page.DashboardHome,
+      })
+    } else {
+      notification.error({
+        duration: 5000,
+        title: 'Неверные данные',
+        description:
+          'Проверьте правильность введенных данных и повторите попытку',
+      })
     }
 
     return res
@@ -26,6 +49,20 @@ export const useAuthStore = defineStore($line, () => {
 
   const signUp = async (input: SignUpInput) => {
     const res = await trpc.auth.signUp.mutate(input)
+
+    if (res.type === SignUpOutputType.Success) {
+      token.value = res.credentials.jwt
+      refetchUser(() => res.credentials.user)
+      router.replace({
+        name: Page.DashboardHome,
+      })
+    } else {
+      notification.error({
+        duration: 5000,
+        title: 'Пользователь уже существует',
+        description: 'Введите другой e-mail и повторите попытку',
+      })
+    }
 
     return res
   }

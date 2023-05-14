@@ -1,4 +1,5 @@
 import { publicProcedure } from '@sovok/server/trpc'
+import { signToken } from '@sovok/server/utils/jwt'
 import { isUniqueConstraintError } from '@sovok/server/utils/prisma'
 import { SignUpInput, SignUpOutput, SignUpOutputType } from '@sovok/shared'
 import { hash } from 'argon2'
@@ -31,7 +32,14 @@ export const signUp = publicProcedure
 
       return {
         type: SignUpOutputType.Success,
-        user,
+        credentials: {
+          jwt: signToken(user.id),
+          user: {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+          },
+        },
       }
     } catch (error) {
       if (isUniqueConstraintError(error)) {

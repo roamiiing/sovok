@@ -2,13 +2,16 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 import HomeView from '@sovok/client/views/HomeView.vue'
 import { AuthRequirement } from '@sovok/client/domain/auth'
+import { Page } from '../domain/page'
+import { redirectOnAuthMiddleware } from './redirect'
 
-export const router = createRouter({
+const router = createRouter({
   history: createWebHistory(),
   routes: [
     {
       path: '/',
       component: HomeView,
+      name: Page.Home,
       meta: {
         auth: AuthRequirement.Whatever,
       },
@@ -21,11 +24,19 @@ export const router = createRouter({
       },
       children: [
         {
+          path: '',
+          redirect: {
+            name: Page.SignIn,
+          },
+        },
+        {
           path: 'sign-up',
+          name: Page.SignUp,
           component: () => import('@sovok/client/views/auth/SignUpView.vue'),
         },
         {
           path: 'sign-in',
+          name: Page.SignIn,
           component: () => import('@sovok/client/views/auth/SignInView.vue'),
         },
       ],
@@ -36,7 +47,14 @@ export const router = createRouter({
       meta: {
         auth: AuthRequirement.Authenticated,
       },
-      children: [],
+      children: [
+        {
+          path: '',
+          name: Page.DashboardHome,
+          component: () =>
+            import('@sovok/client/views/dashboard/DashboardHomeView.vue'),
+        },
+      ],
     },
 
     {
@@ -45,3 +63,7 @@ export const router = createRouter({
     },
   ],
 })
+
+router.beforeEach(redirectOnAuthMiddleware)
+
+export { router }

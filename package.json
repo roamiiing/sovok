@@ -16,6 +16,9 @@
     "build:client": "npm run build -w client",
     "start": "npm run migrate:deploy -w server && node dist/server/app.js"
   },
+  "prisma": {
+    "schema": "./server/prisma/schema.prisma"
+  },
   "author": "",
   "license": "ISC",
   "devDependencies": {

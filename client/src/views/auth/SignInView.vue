@@ -1,6 +1,7 @@
 <script setup lang="ts">
   import BaseTypography from '@sovok/client/components/BaseTypography.vue'
   import SignInForm from '@sovok/client/components/auth/SignInForm.vue'
+  import { Page } from '@sovok/client/domain/page'
 </script>
 
 <template>
@@ -10,5 +11,14 @@
     </BaseTypography>
 
     <SignInForm />
+
+    <BaseTypography class="text-center mt-5">
+      <RouterLink
+        :to="{
+          name: Page.SignUp,
+        }"
+        >У меня нет аккаунта</RouterLink
+      >
+    </BaseTypography>
   </div>
 </template>

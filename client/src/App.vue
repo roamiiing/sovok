@@ -19,7 +19,7 @@
     :theme="currentTheme"
     :theme-overrides="currentThemeOverrides"
   >
-    <NNotificationProvider>
+    <NNotificationProvider :max="1">
       <component :is="layout">
         <RouterView />
       </component>

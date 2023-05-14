@@ -1,7 +1,12 @@
 import { z } from 'zod'
 import { User } from './user'
 
-export const Password = z.string().min(5).max(255)
+export const Password = z
+  .string({
+    required_error: 'Пароль обязателен',
+  })
+  .min(5, 'Пароль должен содержать минимум 5 символов')
+  .max(100, 'Пароль должен содержать максимум 100 символов')
 export type Password = z.infer<typeof Password>
 
 export const Credentials = z.object({
@@ -27,7 +32,7 @@ export enum SignUpOutputType {
 export const SignUpOutput = z.discriminatedUnion('type', [
   z.object({
     type: z.literal(SignUpOutputType.Success),
-    user: User,
+    credentials: Credentials,
   }),
   z.object({
     type: z.literal(SignUpOutputType.AlreadyExists),
