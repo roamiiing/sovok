@@ -2,7 +2,7 @@
   import { h, onErrorCaptured } from 'vue'
   import { NLayout, useNotification } from 'naive-ui'
   import BaseHeader from '@sovok/client/components/BaseHeader.vue'
-  import { ZodError, ZodIssue } from 'zod'
+  import { ZodIssue } from 'zod'
   import { exists } from '@sovok/shared'
 
   const notification = useNotification()

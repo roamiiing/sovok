@@ -1,3 +1,5 @@
+console.log(process.env)
+
 import { resolve } from 'path'
 import express from 'express'
 import cors from 'cors'

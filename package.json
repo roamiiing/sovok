@@ -5,8 +5,6 @@
     "server"
   ],
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
   "scripts": {
     "dev": "concurrently --kill-others -n \"SERVER,CLIENT\" -c \"blue,green\" \"npm:dev:server\" \"npm:dev:client\"",
     "dev:server": "npm run dev -w server",
@@ -16,11 +14,13 @@
     "build:client": "npm run build -w client",
     "start": "npm run migrate:deploy -w server && node dist/server/app.js"
   },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
   "prisma": {
     "schema": "./server/prisma/schema.prisma"
   },
-  "author": "",
-  "license": "ISC",
   "devDependencies": {
     "@types/node": "^18.16.3",
     "concurrently": "^8.0.1",

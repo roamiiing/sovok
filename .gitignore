@@ -24,7 +24,8 @@ dist-ssr
 *.sw?
 
 # Env files
-.env
+.env*
+!.env*.example
 
 # Local data
 postgres-data

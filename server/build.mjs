@@ -8,7 +8,7 @@ await esbuild.build({
   platform: 'node',
   minify: true,
   sourcemap: 'inline',
-  external: ['express', 'prisma', '@prisma/client'],
+  external: ['express', 'prisma', '@prisma/client', 'argon2'],
   define: {
     'process.env.NODE_ENV': '"production"',
   },
