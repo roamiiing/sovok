@@ -1,8 +1,6 @@
-# This docker-compose file is intended to be used for development purposes only.
-
 services:
-  db:
-    image: postgres:15.0
+  database:
+    image: 'postgres:15.0'
     ports:
       - '5432:5432'
     environment:
