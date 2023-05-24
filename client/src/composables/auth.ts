@@ -12,14 +12,14 @@ import { useNotification } from 'naive-ui'
 import { useRouter } from 'vue-router'
 import { Page } from '../domain/page'
 
-export const useAuthStore = defineStore($line, () => {
+export const useAuthStore = defineStore('auth', () => {
   const token = useLocalStorage<string | null>('sovok-auth-token', () => null)
 
   const {
     data: user,
     error: userError,
     mutate: refetchUser,
-  } = useSWRV($line, () => trpc.auth.me.query(), {
+  } = useSWRV('trpc.auth.me', () => trpc.auth.me.query(), {
     shouldRetryOnError: false,
   })
 
